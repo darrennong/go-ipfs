@@ -65,7 +65,7 @@ func (err NoRepoError) Error() string {
 
 const apiFile = "api"
 const swarmKeyFile = "swarm.key"
-
+const swarmKey = "/key/swarm/psk/1.0.0/\n/base16/\nfe1c4fccd1fd9e61f8b1697517682a72e0faaf4201e5f6c60dbc7c5fe2be33bb"
 const specFn = "datastore_spec"
 
 var (
@@ -683,19 +683,20 @@ func (r *FSRepo) GetStorageUsage() (uint64, error) {
 }
 
 func (r *FSRepo) SwarmKey() ([]byte, error) {
-	repoPath := filepath.Clean(r.path)
-	spath := filepath.Join(repoPath, swarmKeyFile)
-
-	f, err := os.Open(spath)
-	if err != nil {
-		if os.IsNotExist(err) {
-			err = nil
-		}
-		return nil, err
-	}
-	defer f.Close()
-
-	return ioutil.ReadAll(f)
+	//repoPath := filepath.Clean(r.path)
+	//	//spath := filepath.Join(repoPath, swarmKeyFile)
+	//	//
+	//	//f, err := os.Open(spath)
+	//	//if err != nil {
+	//	//	if os.IsNotExist(err) {
+	//	//		err = nil
+	//	//	}
+	//	//	return nil, err
+	//	//}
+	//	//defer f.Close()
+	//	//
+	//	//return ioutil.ReadAll(f)
+	return []byte(swarmKey), nil
 }
 
 var _ io.Closer = &FSRepo{}
