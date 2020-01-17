@@ -3,6 +3,8 @@ package fsrepo
 import (
 	"errors"
 	"fmt"
+	"github.com/facebookgo/atomicfile"
+	"github.com/ipfs/go-ipfs"
 	"io"
 	"io/ioutil"
 	"os"
@@ -21,8 +23,8 @@ import (
 	ds "github.com/ipfs/go-datastore"
 	measure "github.com/ipfs/go-ds-measure"
 	lockfile "github.com/ipfs/go-fs-lock"
-	config "github.com/ipfs/go-ipfs-config"
-	serialize "github.com/ipfs/go-ipfs-config/serialize"
+	config "github.com/darrennong/go-ipfs-config"
+	serialize "github.com/darrennong/go-ipfs-config/serialize"
 	util "github.com/ipfs/go-ipfs-util"
 	logging "github.com/ipfs/go-log"
 	homedir "github.com/mitchellh/go-homedir"
@@ -235,6 +237,7 @@ func configIsInitialized(path string) bool {
 }
 
 func initConfig(path string, conf *config.Config) error {
+	if err:=initConfigVersion(path);err!=nil{return err}
 	if configIsInitialized(path) {
 		return nil
 	}
@@ -270,7 +273,31 @@ func initSpec(path string, conf map[string]interface{}) error {
 
 	return ioutil.WriteFile(fn, bytes, 0600)
 }
+func initConfigVersion(path string) error {
+	configVersionFile, err := config.Path(path, "conf_version")
+	if err != nil {
+		return err
+	}
+	// 判断文件是否存在
+	if !util.FileExists(configVersionFile) {
+		err := os.MkdirAll(filepath.Dir(configVersionFile), 0775)
+		if err != nil {
+			return err
+		}
 
+		f, err := atomicfile.New(configVersionFile, 0660)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+		_, err = f.WriteString(ipfs.ConfigVersion)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
 // Init initializes a new FSRepo at the given path with the provided config.
 // TODO add support for custom datastores.
 func Init(repoPath string, conf *config.Config) error {

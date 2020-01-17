@@ -18,7 +18,7 @@ import (
 	path "github.com/ipfs/go-path"
 	peer "github.com/libp2p/go-libp2p-core/peer"
 	routing "github.com/libp2p/go-libp2p-core/routing"
-	b58 "github.com/mr-tron/base58/base58"
+	b58 "github.com/darrennong/base58"
 )
 
 var ErrNotDHT = errors.New("routing service is not a DHT")

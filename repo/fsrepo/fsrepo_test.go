@@ -10,7 +10,7 @@ import (
 	"github.com/ipfs/go-ipfs/thirdparty/assert"
 
 	datastore "github.com/ipfs/go-datastore"
-	config "github.com/ipfs/go-ipfs-config"
+	config "github.com/darrennong/go-ipfs-config"
 )
 
 // swap arg order

@@ -10,3 +10,5 @@ const ApiVersion = "/go-ipfs/" + CurrentVersionNumber + "/"
 
 // UserAgent is the libp2p user agent used by go-ipfs.
 var UserAgent = ApiVersion + CurrentCommit
+// 节点当前配置版本
+const ConfigVersion = "1.0.2"

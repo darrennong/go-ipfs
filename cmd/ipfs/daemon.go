@@ -4,6 +4,7 @@ import (
 	"errors"
 	_ "expvar"
 	"fmt"
+	"github.com/hashicorp/go-multierror"
 	"net"
 	"net/http"
 	_ "net/http/pprof"
@@ -12,9 +13,9 @@ import (
 	"sort"
 	"sync"
 
+	config "github.com/darrennong/go-ipfs-config"
+	cserial "github.com/darrennong/go-ipfs-config/serialize"
 	version "github.com/ipfs/go-ipfs"
-	config "github.com/ipfs/go-ipfs-config"
-	cserial "github.com/ipfs/go-ipfs-config/serialize"
 	utilmain "github.com/ipfs/go-ipfs/cmd/ipfs/util"
 	oldcmds "github.com/ipfs/go-ipfs/commands"
 	"github.com/ipfs/go-ipfs/core"
@@ -27,7 +28,6 @@ import (
 	migrate "github.com/ipfs/go-ipfs/repo/fsrepo/migrations"
 	sockets "github.com/libp2p/go-socket-activation"
 
-	"github.com/hashicorp/go-multierror"
 	cmds "github.com/ipfs/go-ipfs-cmds"
 	mprome "github.com/ipfs/go-metrics-prometheus"
 	goprocess "github.com/jbenet/goprocess"
